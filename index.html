@@ -44,7 +44,21 @@
       font-size: 1.5rem; font-weight: 600; color: #BDFF20;
       cursor: pointer;
     }
-    nav { display: flex; gap: 30px; }
+    nav {
+      display: flex; gap: 30px;
+    }
+    nav.mobile-open {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.95);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      display: flex;
+      z-index: 1500;
+    }
     nav a {
       position: relative; padding: 4px 0; font-weight: 500;
     }
@@ -91,8 +105,11 @@
     /* ===== Hero ===== */
     #home {
       background: url('assets/sky.jpg') center/cover no-repeat fixed;
-      height: 100vh; display: flex; align-items: center;
-      justify-content: center; position: relative;
+      min-height: 60vh;
+      display: flex; align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 80px 0;
     }
     #home::after {
       content: ''; position: absolute; inset: 0; background:
@@ -100,6 +117,7 @@
     }
     .hero-content {
       position: relative; z-index: 1; text-align: center; max-width: 700px;
+      padding: 0 16px;
     }
     .typewriter {
       overflow: hidden; white-space: nowrap; border-right: .15em solid
@@ -108,13 +126,12 @@
     }
     @keyframes type { from{ width:0; } to{ width:100%; } }
     @keyframes blink { 50%{ border-color:transparent; } }
-    .hero-content h1 { font-size: 4rem; margin-bottom: 20px; color:
-    #fff; }
-    .hero-content p { font-size: 1.25rem; color: #ccc;
-      margin-bottom: 30px; }
+    .hero-content h1 { font-size: 3rem; margin-bottom: 16px; color: #fff; }
+    .hero-content p { font-size: 1rem; color: #ccc; margin-bottom: 24px; }
     .btn {
-      padding: 16px 48px; background: #BDFF20; color: #000;
+      padding: 12px 32px; background: #BDFF20; color: #000;
       font-weight: 600; border-radius: 30px; transition: transform .3s;
+      font-size: 1rem;
     }
     .btn:hover { transform: scale(1.1) rotate(-1deg); }
 
@@ -173,8 +190,7 @@
     #team .team-card:hover {
       transform: translateY(-10px) rotateZ(0deg);
     }
-
-    /* ——— CIRCULAR IMAGE SHAPE ——— */
+    /* circular on desktop */
     #team .team-card img {
       width: 200px; height: 200px; object-fit: cover; border-radius: 50%;
       margin: 0 auto 16px; display: block;
@@ -183,85 +199,61 @@
     /* ===== Contact ===== */
     #contact .contact-info {
       max-width: 48%; margin: 0 auto; text-align: center; color: #ddd;
+      padding: 40px 0;
     }
     #contact .contact-info p { margin-bottom: 12px; }
 
     /* ===== Mobile Responsiveness ===== */
     @media (max-width: 600px) {
-      /* shrink side padding */
-      .section {
-        padding: 0 16px; margin: 20px auto;
-      }
+      /* header shrink */
+      header { padding: 10px 16px; }
+      .hamburger { display: flex; }
 
-      /* — Hero tweaks — */
+      /* nav overlay hidden by default */
+      nav { display: none; }
+      nav.mobile-open { display: flex; }
+
+      /* hero */
+      #home { min-height: auto; height: auto; padding: 60px 0; }
       .hero-content {
-        max-width: 100%; padding: 0 8px;
+        max-width: 100%; padding: 0 12px;
       }
-      .hero-content h1 { font-size: 2.5rem; }
-      .hero-content p  { font-size: 1rem; }
+      .hero-content h1 { font-size: 2.2rem; margin-bottom: 12px; }
+      .hero-content p { font-size: 1rem; margin-bottom: 20px; }
 
-      /* stack About & Mission cards */
-      .top-cards {
-        display: block;
-      }
-      .top-cards .card {
-        width: 100%; margin-bottom: 20px;
-      }
+      /* stack About & Mission */
+      .top-cards { display: block; }
+      .top-cards .card { width: 100%; margin-bottom: 20px; }
 
-      /* single column GV Goals */
-      .goals-card {
-        display: block; padding: 20px 0;
-      }
-      .goals-card .title-area,
-      .goals-card .provide,
-      .goals-card .promote,
-      .goals-card .fun {
-        width: 100%; margin-bottom: 20px; text-align: center;
-      }
+      /* single column goals */
+      .goals-card { display: block; padding: 20px 0; }
+      .goals-card > * { width: 100%; text-align: center; margin-bottom: 20px; }
 
-      /* stack events vertically */
-      .event-list {
-        display: block;
-      }
+      /* events vertical */
+      .event-list { display: block; }
       .event-card {
-        flex-direction: column; width: 100%; padding: 20px;
+        flex-direction: column; width: 100%; padding: 20px; margin-bottom: 20px;
       }
-      .event-card .event-text,
-      .event-card .event-poster {
-        width: 100%;
-      }
-      .event-card .event-poster img {
-        margin-top: 16px;
-      }
+      .event-card .event-poster img { margin-top: 16px; }
 
-      /* stack team cards and make images rectangles */
-      #team .team-members {
-        display: block;
-      }
+      /* team full-width + rectangles */
+      #team .team-members { display: block; }
       #team .team-card {
         width: 100%; max-width: none; margin-bottom: 20px;
       }
       #team .team-card img {
-        border-radius: 12px;       /* rectangle corners */
-        width: 100%;               /* full width */
-        height: auto;              /* auto height */
+        width: 100%; height: auto; border-radius: 12px;
         margin-bottom: 12px;
       }
 
-      /* show hamburger, hide desktop nav */
-      nav { display: none; }
-      .hamburger { display: flex; }
-
-      /* scale down titles & buttons */
-      .section-title { font-size: 1.5rem; margin-bottom: 16px; }
-      .btn {
-        padding: 12px 24px; font-size: 0.9rem;
-      }
-
-      /* contact: full-width centered */
+      /* contact */
       #contact .contact-info {
-        max-width: 100%; padding: 0 8px;
+        max-width: 100%; padding: 20px 12px;
       }
+
+      /* scale down headings/buttons */
+      .section-title { font-size: 1.5rem; margin-bottom: 16px; }
+      .btn { padding: 10px 24px; font-size: 0.9rem; }
     }
   </style>
 </head>
@@ -422,7 +414,7 @@
     });
     function toggleNav(){
       const nav = document.getElementById('mainNav');
-      nav.style.display = nav.style.display==='flex'?'none':'flex';
+      nav.classList.toggle('mobile-open');
     }
   </script>
 </body>
