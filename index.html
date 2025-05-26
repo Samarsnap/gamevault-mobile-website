@@ -37,12 +37,12 @@
       background:rgba(0,0,0,0.8);
       backdrop-filter:blur(10px);
       display:flex; justify-content:space-between; align-items:center;
-      z-index:1000;
-      transition:background .3s;
+      z-index:1000; transition:background .3s;
     }
     header.scrolled { background:rgba(0,0,0,0.6); }
     .logo {
-      font-size:1.5rem; font-weight:600; color:#BDFF20; cursor:pointer;
+      font-size:1.5rem; font-weight:600; color:#BDFF20;
+      cursor:pointer;
     }
     nav { display:flex; gap:30px; }
     nav a {
@@ -179,28 +179,24 @@
     }
     #contact .contact-info p { margin-bottom:12px; }
 
-    /* ===== Mobile Responsiveness (<=600px) ===== */
+    /* ===== Mobile Responsiveness ===== */
     @media (max-width:600px) {
       /* shrink gutters */
       .section {
         padding:0 16px; margin:20px auto;
       }
 
-      /* 1) HERO: full-width + centered */
-      #home {
-        display:flex; justify-content:center; align-items:center;
-      }
-      #home .hero-content {
-        width:100%;      /* full width */
-        max-width:none;
-        box-sizing:border-box;
+      /* 1) HERO full width + centered */
+      #home { display:flex; justify-content:center; align-items:center; }
+      .hero-content {
+        width:100%; max-width:none; box-sizing:border-box;
       }
 
       /* stack About & Mission */
       .top-cards { display:block; }
       .top-cards .card { width:100%; margin-bottom:20px; }
 
-      /* GV Goals single column */
+      /* single column GV Goals */
       .goals-card { display:block; padding:20px 0; }
       .goals-card .title-area,
       .goals-card .provide,
@@ -216,13 +212,13 @@
       }
       .event-card .event-poster img { margin-top:16px; }
 
-      /* 2) TEAM: each card centered */
+      /* 2) TEAM cards centered */
       .team-members { display:block; }
       .team-card {
         width:100%; max-width:none; margin:0 auto 20px;
       }
 
-      /* 3) CONTACT: center title & info */
+      /* 3) CONTACT centered */
       #contact .section-title,
       #contact .contact-info {
         text-align:center; margin:0 auto;
@@ -232,17 +228,17 @@
       nav { display:none; }
       .hamburger { display:flex; }
 
-      /* scale down titles & buttons */
+      /* scale down */
       .section-title { font-size:1.5rem; margin-bottom:16px; }
       .btn { padding:12px 24px; font-size:0.9rem; }
     }
   </style>
 </head>
 <body>
-  <!-- Progress Bar -->
+  <!-- progress bar -->
   <div id="progress"></div>
 
-  <!-- Header & Nav -->
+  <!-- header/nav -->
   <header>
     <div class="logo">GameVault</div>
     <div class="hamburger" onclick="toggleNav()">
@@ -262,7 +258,7 @@
     <section id="home" class="section" data-aos="fade-up">
       <div class="hero-content">
         <h1><span class="typewriter">Want to know? GAMEVAULT</span></h1>
-        <p>Transforming esports into a healthier, more inclusive, truly engaging experience.</p>
+        <p>Transforming esports into a healthier, more inclusive, and truly engaging experience.</p>
         <a href="#about" class="btn">Dive in!</a>
       </div>
     </section>
@@ -272,26 +268,26 @@
       <div class="top-cards">
         <div class="card" data-aos="fade-right">
           <h2>ABOUT US</h2>
-          <p>At GameVault, we believe competitive gaming should elevate – not overwhelm – its community.</p>
+          <p>At GameVault, we believe competitive gaming should elevate – not overwhelm – its community. We are on a mission to foster a transparent, informative, and non-addictive E-Sports ecosystem, where thrill and skill go hand in hand with mental well-being.</p>
         </div>
         <div class="card" data-aos="fade-left">
           <h2>Our Mission</h2>
-          <p>To create a safe, inclusive, and supportive space where gamers can compete, learn, and grow.</p>
+          <p>To create a safe, inclusive, and supportive space where gamers can compete, learn, and grow without the stress and pressure of traditional gaming environments. We strive to build a community that values respect, balance, and healthy gaming habits.</p>
         </div>
       </div>
       <div class="goals-card" data-aos="zoom-in">
         <div class="title-area"><h2>GV<br>Goals</h2></div>
         <div class="goal provide" data-aos="fade-up" data-aos-delay="100">
           <h3>Provide Open Information</h3>
-          <p>Deliver transparent resources that empower players.</p>
+          <p>Deliver transparent resources that empower players to make informed gaming decisions.</p>
         </div>
         <div class="goal promote" data-aos="fade-up" data-aos-delay="200">
           <h3>Promote Healthy Gameplay</h3>
-          <p>Encourage breaks, mental health awareness, inclusivity.</p>
+          <p>Encourage regular breaks, mental health awareness, and a culture of respect and inclusivity.</p>
         </div>
         <div class="goal fun" data-aos="fade-up" data-aos-delay="300">
           <h3>Addiction-Free Fun</h3>
-          <p>Wellness tips ensure gaming stays a passion, not addiction.</p>
+          <p>Thoughtful scheduling, reasonable match lengths, and wellness tips ensure gaming stays a passion, not a pitfall.</p>
         </div>
       </div>
     </section>
@@ -305,9 +301,14 @@
           <div class="event-text">
             <h4>Barh Summer Royale BGMI Tournament</h4>
             <p>Duration: 1 Day</p>
-            <p>Date: TBD</p>
+            <p>Date: to be decided</p>
             <p>Prize: 4000 Day</p>
             <p>Location: Barh, Bihar</p>
+            <p>Venue: To be decided</p>
+            <p>Click for registration</p>
+            <p>Rules:</p>
+            <p>1. Only Squad entry</p>
+            <p>2. Barh Subdivision Gamers</p>
           </div>
           <div class="event-poster">
             <img src="assets/p.png" alt="Event Poster"/>
@@ -316,7 +317,7 @@
       </div>
     </section>
 
-    <!-- OUR TEAM -->
+    <!-- TEAM -->
     <section id="team" class="section" data-aos="fade-up">
       <div class="section-title">Our Team</div>
       <div class="team-members">
@@ -332,7 +333,6 @@
         </div>
       </div>
 
-      <!-- GV GAMERS TEAM -->
       <div class="section-title">GV Gamers Team</div>
       <div class="team-members">
         <div class="team-card" data-aos="flip-left">
@@ -343,17 +343,17 @@
         <div class="team-card" data-aos="flip-up">
           <img src="assets/render.jpg" alt="Render Expert"/>
           <h3>Render Expert (BGMI/CODM)</h3>
-          <p>High-octane MOBA specialists.</p>
+          <p>High-octane MOBA specialists with regional championships.</p>
         </div>
         <div class="team-card" data-aos="flip-right">
           <img src="assets/deep.jpg" alt="The K/D guy"/>
           <h3>The K/D guy (BGMI)</h3>
-          <p>Battle royale experts dominating tournaments.</p>
+          <p>Battle royale experts dominating local tournaments.</p>
         </div>
         <div class="team-card" data-aos="flip-up">
           <img src="assets/beginner.jpg" alt="The Beginner"/>
           <h3>The Beginner (BGMI/CODM)</h3>
-          <p>Up-and-coming champion in BGMI & CODM.</p>
+          <p>Up-and-coming champion in BGMI and CODM tournaments.</p>
         </div>
       </div>
     </section>
@@ -364,11 +364,13 @@
       <div class="contact-info">
         <p><strong>Partnerships:</strong> partnerships@gamevault.com</p>
         <p><strong>Support:</strong> support@gamevault.com</p>
+        <p>Fill out our <a href="#">Partnership Form</a> or follow us on <a href="#">Linktree</a> for more.</p>
       </div>
     </section>
+
   </main>
 
-  <!-- AOS & Custom Scripts -->
+  <!-- AOS & Custom JS -->
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>
     AOS.init({ duration:800, offset:100, once:false, mirror:true });
@@ -382,15 +384,16 @@
       document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
       document.querySelectorAll('nav a').forEach(a => {
         const sec = document.querySelector(a.getAttribute('href'));
-        if (sec && sec.offsetTop <= window.scrollY + 200 &&
-            sec.offsetTop + sec.offsetHeight > window.scrollY + 200) {
+        if (sec
+            && sec.offsetTop <= window.scrollY + 200
+            && sec.offsetTop + sec.offsetHeight > window.scrollY + 200) {
           a.classList.add('active');
         } else {
           a.classList.remove('active');
         }
       });
     });
-    function toggleNav(){
+    function toggleNav() {
       const nav = document.getElementById('mainNav');
       nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
     }
