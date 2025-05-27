@@ -265,6 +265,36 @@
     @media(max-width:576px) {
       .btn { padding:.5rem 1.5rem; }
     }
+
+    /* ==================================================== */
+    /*                NEW DESKTOP FIXES                    */
+    /* 1) Let “Addiction-Free Fun” span both cols on wide   */
+    @media (min-width: 769px) {
+      .goals-card .fun {
+        grid-column: 2 / span 2;
+        text-align: center;
+      }
+    }
+    /* 2) Turn team into a 4-col grid on desktop */
+    @media (min-width: 769px) {
+      #team .team-members {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.25rem;
+      }
+      #team .team-card {
+        flex: none;
+        max-width: none;
+      }
+    }
+    /* 3) Ensure #home BG scrolls normally on small screens */
+    @media (max-width: 768px) {
+      #home {
+        background-attachment: scroll !important;
+      }
+    }
+    /* ==================================================== */
+
   </style>
 </head>
 <body>
@@ -411,7 +441,7 @@
       const h = document.documentElement,
             pct = (h.scrollTop/(h.scrollHeight - h.clientHeight))*100;
       document.getElementById('progress').style.width = pct+'%';
-      document.querySelector('header').classList.toggle('scrolled',window.scrollY>50);
+      document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
       document.querySelectorAll('nav a').forEach(a=>{
         const sec = document.querySelector(a.getAttribute('href'));
         a.classList.toggle('active',
