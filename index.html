@@ -85,8 +85,7 @@
       transform: scaleX(1);
       transform-origin: left;
     }
-    /* hamburger hidden on desktop */
-    .hamburger { display: none; }
+    .hamburger { display: none; }                     /* hidden on desktop */
     .hamburger span {
       display: block;
       width: 1.5rem; height: .2rem;
@@ -343,9 +342,47 @@
       font-size: clamp(.9rem,2.5vw,1rem);
     }
 
-    /* =====================================
+
+    /* ================================================
+       DESKTOP-ONLY OVERRIDES (Applying your screenshots)
+       — only on screens ≥ 769px
+    ================================================= */
+    @media (min-width: 769px) {
+      /* Hero: enable fixed background for parallax look */
+      #home {
+        background-attachment: fixed;
+      }
+      /* About cards: force side-by-side and center them */
+      .top-cards {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+      }
+      .top-cards .card {
+        flex: 0 1 45%;
+        max-width: 45%;
+        margin: 0;
+      }
+      /* GV Goals: let the "fun" item span both columns */
+      .goals-card .fun {
+        grid-column: 2 / span 2;
+        text-align: left;
+      }
+      /* Events: widen event card and center via flex */
+      .event-card {
+        max-width: 60rem;
+        padding: 3rem;
+      }
+      .event-list {
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+
+    /* ================================
        MOBILE OVERLAY NAV
-    ====================================== */
+    ================================= */
     nav.mobile-open {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -532,7 +569,7 @@
     });
 
     /* mobile nav toggle */
-    function toggleNav(){
+    function(toggleNav){
       document.getElementById('mainNav').classList.toggle('mobile-open');
     }
   </script>
