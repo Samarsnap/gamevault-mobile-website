@@ -2,576 +2,339 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>GameVault E-Sports</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
-  <!-- AOS for scroll animations -->
-  <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet"/>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameVault Mobile</title>
   <style>
-    /* ================================
+    /* ===============================
        GLOBAL RESET & VARIABLES
-    ================================= */
-    html { scroll-behavior: smooth; }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #000;
-      color: #fff;
-      overflow-x: hidden;
-      line-height: 1.5;
-    }
-    a { color: inherit; text-decoration: none; }
+    =============================== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { background: #000; color: #fff; font-family: 'Poppins', sans-serif; }
 
-    /* ================================
-       PROGRESS BAR & HEADER (COMMON)
-    ================================= */
-    #progress {
-      position: fixed;
-      top: 0; left: 0;
-      width: 0; height: 4px;
-      background: #BDFF20;
-      z-index: 2000;
-      transition: width .2s;
-    }
+    /* ===============================
+       HEADER & NAVIGATION
+    =============================== */
     header {
+      /* Fixed header at top */
       position: fixed;
-      top: 0; left: 0; width: 100%;
-      padding: 1rem 2rem;                              /* default padding */
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(10px);
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 1000;
-      transition: background .3s;
+      background: rgba(0,0,0,0.8);
+      z-index: 10;
     }
-    header.scrolled { background: rgba(0,0,0,0.6); }
     .logo {
-      font-size: clamp(1.25rem, 4vw, 1.5rem);
-      font-weight: 600;
-      color: #BDFF20;
-      cursor: pointer;
+      /* Logo styling */
+      font-size: 20px;
+      font-weight: bold;
+      color: #A4FF36;
     }
-
-    /* ==========================================
-       NAVIGATION - default (desktop-first)
-       (mobile will override below)
-    =========================================== */
-    nav {
+    nav ul {
+      /* Horizontal menu list */
       display: flex;
-      gap: 2rem;
+      gap: 12px;
+      list-style: none;
     }
     nav a {
-      position: relative;
-      padding: .25rem 0;
-      font-weight: 500;
-      font-size: clamp(1rem, 3vw, 1.125rem);
-    }
-    nav a::after {
-      content: '';
-      position: absolute;
-      left: 0; bottom: -2px;
-      width: 100%; height: 2px;
-      background: #BDFF20;
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform .3s;
-    }
-    nav a:hover::after,
-    nav a.active::after {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-    .hamburger { display: none; }                     /* hidden on desktop */
-    .hamburger span {
-      display: block;
-      width: 1.5rem; height: .2rem;
-      background: #fff;
-      border-radius: 2px;
+      /* Menu link styling */
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
     }
 
-    /* ==========================================
-       SECTION BASE
-    =========================================== */
-    main { padding-top: 6rem; }
-    .section {
-      opacity: 0;
-      transform: translateY(2rem);
-      transition: opacity .8s ease-out, transform .8s ease-out;
-      max-width: 75rem;
-      margin: 2rem auto;
-      padding: 0 2rem;
-      scroll-margin-top: 6rem;
-    }
-    .section.visible { opacity: 1; transform: translateY(0); }
-    .section-title {
-      text-align: center;
-      font-size: clamp(1.5rem,4vw,2rem);
-      margin-bottom: 2rem;
-      position: relative;
-    }
-    .section-title::after {
-      content: '';
-      width: 4rem; height: .25rem;
-      background: #BDFF20;
-      position: absolute;
-      left: 50%; transform: translateX(-50%);
-      bottom: -.75rem;
-    }
-
-    /* ==============
+    /* ===============================
        HERO SECTION
-    =============== */
-    #home {
-      background: url('assets/sky.jpg') center/cover no-repeat;
-      padding: 5rem 0;
-      display: flex; align-items: center; justify-content: center;
+    =============================== */
+    .hero {
+      /* Push below fixed header */
+      margin-top: 72px;
       position: relative;
-    }
-    #home::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: rgba(0,0,0,0.6);
-    }
-    .hero-content {
-      position: relative; z-index: 1;
-      text-align: center;
-      max-width: 700px; padding: 0 1rem;
-    }
-    .hero-content h1 {
-      font-size: clamp(2rem,6vw,3rem);
-      margin-bottom: 1rem;
-      color: #fff;
-    }
-    .hero-content p {
-      font-size: clamp(1rem,3vw,1.25rem);
-      color: #ccc;
-      margin-bottom: 1.5rem;
-    }
-    .btn {
-      display: inline-block;
-      padding: .75rem 2rem;
-      background: #BDFF20;
-      color: #000;
-      font-weight: 600;
-      border-radius: 30px;
-      transition: transform .3s;
-      font-size: clamp(.9rem,2.5vw,1rem);
-    }
-    .btn:hover { transform: scale(1.1) rotate(-1deg); }
-
-    /* ===========================
-       ABOUT & MISSION (“top-cards”)
-    ============================ */
-    .top-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(20rem,1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-    .top-cards .card {
-      background: #222;
-      border-radius: 12px;
-      padding: 1.5rem;
-    }
-    .top-cards .card h2 {
-      font-size: clamp(1.25rem,3vw,1.8rem);
-      margin-bottom: .75rem;
-    }
-    .top-cards .card p {
-      font-size: clamp(.9rem,2.5vw,1rem);
-      color: #eee;
-      line-height: 1.5;
-    }
-
-    /* =============================
-       GV GOALS (one column mobile,
-       three-column desktop)
-    ============================== */
-    .goals-card {
-      background: #222;
-      border-radius: 12px;
-      padding: 2rem 1rem;
-      display: grid;
-      gap: 1.5rem;
-      grid-template-columns: 1fr;               /* MOBILE fallback */
-    }
-    @media (min-width: 992px) {
-      .goals-card {
-        grid-template-columns: auto 1fr 1fr;
-        grid-template-rows: auto auto;
-        gap: 2rem 1.5rem;
-      }
-    }
-    .goals-card .title-area h2 {
-      font-size: clamp(2rem,5vw,2.5rem);
-      line-height: 1.1;
-      color: #fff;
-    }
-    .goals-card .provide,
-    .goals-card .promote,
-    .goals-card .fun {
-      text-align: center;
-    }
-    .goals-card h3 {
-      font-size: clamp(1rem,3vw,1.2rem);
-      margin-bottom: .5rem;
-      color: #fff;
-    }
-    .goals-card p {
-      font-size: clamp(.85rem,2.5vw,.95rem);
-      color: #ccc;
-    }
-
-    /* ========================
-       EVENTS (single column mobile,
-       side-by-side desktop)
-    ========================= */
-    #events .subheading {
-      font-size: clamp(1.25rem,3vw,1.5rem);
-      margin: 2rem 0;
-      color: #BDFF20;
-      text-align: center;
-    }
-    .event-list {
-      display: grid;
-      place-items: center;
-      gap: 2rem;
-    }
-    .event-card {
-      background: #222;
-      border-radius: 8px;
-      overflow: hidden;
-      padding: 2rem;
-      transition: transform .3s, box-shadow .3s;
+      background: url('assets/hero-bg.jpg') center/cover no-repeat;
+      height: 320px;
       display: flex;
-      flex-direction: column;                    /* MOBILE fallback */
-      width: 100%;
-      max-width: 32rem;
-    }
-    @media (min-width: 768px) {
-      .event-card { flex-direction: row; }
-    }
-    .event-text h4 {
-      font-size: clamp(1.25rem,3vw,1.5rem);
-      margin-bottom: .75rem;
-      color: #fff;
-    }
-    .event-text p {
-      margin-bottom: .5rem;
-      color: #ccc;
-      font-size: clamp(.85rem,2.5vw,1rem);
-    }
-    .event-poster {
-      margin-top: 1rem;
-      flex: 0 0 40%;
-    }
-    @media (min-width: 768px) {
-      .event-poster {
-        margin-left: 1.5rem;
-        margin-top: 0;
-      }
-    }
-    .event-poster img {
-      width: 100%;
-      height: auto;
-      border-radius: 6px;
-    }
-    .event-card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 8px 24px rgba(0,0,0,.5);
-    }
-
-    /* =========================
-       TEAM (grid mobile, flex desktop)
-    ========================== */
-    .team-members {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(14rem,1fr));
-      gap: 1.25rem;
-      justify-items: center;
-    }
-    @media (min-width: 769px) {
-      /* switch to flex on larger screens */
-      .team-members {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        justify-content: center;
-      }
-    }
-    .team-card {
-      background: #222;
-      padding: 1rem;
-      border-radius: 12px;
-      text-align: center;
-      transition: transform .3s;
-      width: 100%;
-      max-width: 14rem;
-    }
-    .team-card:hover { transform: translateY(-.5rem); }
-    .team-card img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      margin-bottom: .75rem;
-      border-radius: 12px;                     /* MOBILE rectangle */
-    }
-    @media (min-width: 768px) {
-      .team-card img {
-        border-radius: 50%;                   /* DESKTOP circle */
-        width: 12rem; height: 12rem;
-      }
-    }
-
-    /* =========================
-       CONTACT (centered always)
-    ========================== */
-    #contact .contact-info {
-      max-width: 30rem;
-      margin: 2rem auto;
-      text-align: center;
-      color: #ddd;
-      padding: 1rem;
-    }
-    #contact .contact-info p {
-      margin-bottom: .75rem;
-      font-size: clamp(.9rem,2.5vw,1rem);
-    }
-
-
-    /* ================================================
-       DESKTOP-ONLY OVERRIDES (Applying your screenshots)
-       — only on screens ≥ 769px
-    ================================================= */
-    @media (min-width: 769px) {
-      /* Hero: enable fixed background for parallax look */
-      #home {
-        background-attachment: fixed;
-      }
-      /* About cards: force side-by-side and center them */
-      .top-cards {
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-      }
-      .top-cards .card {
-        flex: 0 1 45%;
-        max-width: 45%;
-        margin: 0;
-      }
-      /* GV Goals: let the "fun" item span both columns */
-      .goals-card .fun {
-        grid-column: 2 / span 2;
-        text-align: left;
-      }
-      /* Events: widen event card and center via flex */
-      .event-card {
-        max-width: 60rem;
-        padding: 3rem;
-      }
-      .event-list {
-        display: flex;
-        justify-content: center;
-      }
-    }
-
-
-    /* ================================
-       MOBILE OVERLAY NAV
-    ================================= */
-    nav.mobile-open {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.95);
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1.5rem;
-      display: flex;
-      z-index: 1500;
+      text-align: center;
+    }
+    .hero::after {
+      /* Dark overlay */
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+    }
+    .hero-content {
+      /* Ensure text above overlay */
+      position: relative;
+      z-index: 1;
+      padding: 0 16px;
+    }
+    .hero-content h1 {
+      /* Main heading */
+      font-size: 24px;
+      color: #fff;
+      line-height: 1.2;
+    }
+    .hero-content h1 .highlight {
+      /* Highlight text in neon green */
+      color: #A4FF36;
+    }
+    .hero-content p {
+      /* Subtitle text */
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    .btn {
+      /* Call-to-action button */
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 24px;
+      background: #A4FF36;
+      color: #000;
+      border-radius: 24px;
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: 600;
     }
 
-    /* ================================
-       BREAKPOINTS: Tablet & Mobile
-    ================================= */
-    @media (max-width: 992px) {
-      header { padding: 1rem; }
-      main   { padding-top: 5rem; }
+    /* ===============================
+       SECTION TITLES
+    =============================== */
+    .section-title {
+      /* Centered neon-green titles with arrows */
+      text-align: center;
+      color: #A4FF36;
+      font-size: 16px;
+      margin: 32px 0 16px;
     }
-    @media (max-width: 768px) {
-      /* show hamburger, hide desktop nav */
-      .hamburger { display: flex; }
-      nav:not(.mobile-open) { display: none; }
+
+    /* ===============================
+       CARDS & GRID LAYOUTS
+    =============================== */
+    .card-container {
+      /* Single-column grid for mobile */
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      padding: 0 16px;
     }
-    @media (max-width: 576px) {
-      .btn { padding: .5rem 1.5rem; }
+    .card {
+      /* Dark card background */
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .two-col {
+      /* Two cards side by side on larger mobiles */
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* ===============================
+       EVENTS SECTION
+    =============================== */
+    .events {
+      /* Events wrapper */
+      padding-bottom: 16px;
+    }
+    .event-details {
+      /* Event details text */
+      font-size: 14px;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .poster {
+      /* Event poster image */
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    /* ===============================
+       TEAM SECTION
+    =============================== */
+    .team-grid {
+      /* Grid for team member cards */
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 12px;
+      padding: 0 16px;
+    }
+    .member {
+      /* Individual member card */
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      text-align: center;
+      padding: 12px;
+    }
+    .member img {
+      /* Circular avatar */
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 8px;
+    }
+    .member .name {
+      /* Name text */
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .member .role {
+      /* Role text */
+      font-size: 12px;
+      color: #ccc;
+    }
+
+    /* ===============================
+       FOOTER & CONTACT
+    =============================== */
+    footer {
+      /* Space for contact info and socials */
+      padding: 24px 16px;
+      text-align: center;
+      font-size: 12px;
+      color: #fff;
+    }
+    .contact {
+      /* Partnership & support emails */
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 8px;
     }
   </style>
 </head>
 <body>
-  <!-- progress bar indicator -->
-  <div id="progress"></div>
-
-  <!-- header & nav -->
+  <!-- HEADER -->
   <header>
     <div class="logo">GameVault</div>
-    <div class="hamburger" onclick="toggleNav()">
-      <span></span><span></span><span></span>
-    </div>
-    <nav id="mainNav">
-      <a href="#home" class="active">Home</a>
-      <a href="#about">About GV</a>
-      <a href="#events">Our Events</a>
-      <a href="#team">Our Team</a>
-      <a href="#contact">Get in Touch</a>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About GV</a></li>
+        <li><a href="#events">Our Events</a></li>
+        <li><a href="#team">Our Team</a></li>
+        <li><a href="#contact">Get in Touch</a></li>
+      </ul>
     </nav>
   </header>
 
-  <main>
-    <!-- HERO -->
-    <section id="home" class="section" data-aos="fade-up">
-      <div class="hero-content">
-        <h1><span class="typewriter">Want to know? GAMEVAULT</span></h1>
-        <p>Transforming esports into a healthier, more inclusive, and truly engaging experience.</p>
-        <a href="#about" class="btn">Dive in!</a>
+  <!-- HERO SECTION -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>Want to Know <span class="highlight">GameVault?</span></h1>
+      <p>Transforming esports into a healthier, more inclusive, and truly engaging experience.</p>
+      <a href="#about" class="btn">Dive In!</a>
+    </div>
+  </section>
+
+  <!-- ABOUT & MISSION -->
+  <div class="section-title">◄ Know GameVault ►</div>
+  <div class="card-container">
+    <!-- About Us Card -->
+    <div class="card" id="about">
+      <h3>About Us</h3>
+      <p>At GameVault, we believe competitive gaming should elevate – not overwhelm – its community. We are on a mission to foster a transparent, informative, and non-addictive E-Sports ecosystem, where thrill and skill go hand in hand with mental well-being.</p>
+    </div>
+    <!-- Our Mission Card -->
+    <div class="card">
+      <h3>Our Mission</h3>
+      <p>To create a safe, inclusive, and supportive space where gamers can compete, learn, and grow without the stress and pressure of traditional gaming environments. We strive to build a community that values respect, balance, and healthy gaming habits.</p>
+    </div>
+  </div>
+
+  <!-- GOALS -->
+  <div class="section-title">◄ GV Goals ►</div>
+  <div class="card-container two-col">
+    <!-- Provide Open Information -->
+    <div class="card">
+      <h4>Provide Open Information</h4>
+      <p>Deliver transparent resources that empower players to make informed gaming decisions.</p>
+    </div>
+    <!-- Promote Healthy Gameplay -->
+    <div class="card">
+      <h4>Promote Healthy Gameplay</h4>
+      <p>Encourage regular breaks, mental health awareness, and a culture of respect and inclusivity.</p>
+    </div>
+    <!-- Addiction-Free Fun -->
+    <div class="card">
+      <h4>Addiction-Free Fun</h4>
+      <p>Thoughtful scheduling, reasonable match lengths, and wellness tips ensure gaming stays a passion, not a pitfall.</p>
+    </div>
+  </div>
+
+  <!-- EVENTS SECTION -->
+  <div class="section-title" id="events">◄ Our Events ►</div>
+  <div class="card-container events">
+    <div class="card">
+      <h3>Upcoming Events</h3>
+      <div class="event-details">
+        <p><strong>Event Details:</strong> Barh Summer Royale BGMI Tournament</p>
+        <p><strong>Duration:</strong> 1 Day</p>
+        <p><strong>Date:</strong> To be decided</p>
+        <p><strong>Prize:</strong> 4000/day</p>
+        <p><strong>Location:</strong> Barh, Bihar</p>
+        <p><strong>Venue:</strong> To be decided</p>
+        <p><strong>Rules:</strong> Only Squad entry, Barh Subdivision Gamers</p>
       </div>
-    </section>
+      <!-- Event Poster -->
+      <img src="assets/event-poster.jpg" alt="BGMI Tournament Poster" class="poster" />
+    </div>
+  </div>
 
-    <!-- ABOUT & MISSION -->
-    <section id="about" class="section" data-aos="fade-up">
-      <div class="top-cards">
-        <div class="card" data-aos="fade-right">
-          <h2>ABOUT US</h2>
-          <p>At GameVault, we believe competitive gaming should elevate – not overwhelm – its community. We are on a mission to foster a transparent, informative, and non-addictive E-Sports ecosystem, where thrill and skill go hand in hand with mental well-being.</p>
-        </div>
-        <div class="card" data-aos="fade-left">
-          <h2>Our Mission</h2>
-          <p>To create a safe, inclusive, and supportive space where gamers can compete, learn, and grow without the stress and pressure of traditional gaming environments. We strive to build a community that values respect, balance, and healthy gaming habits.</p>
-        </div>
-      </div>
-      <div class="goals-card" data-aos="zoom-in">
-        <div class="title-area"><h2>GV<br>Goals</h2></div>
-        <div class="provide"  data-aos="fade-up" data-aos-delay="100">
-          <h3>Provide Open Information</h3>
-          <p>Deliver transparent resources that empower players to make informed gaming decisions.</p>
-        </div>
-        <div class="promote"  data-aos="fade-up" data-aos-delay="200">
-          <h3>Promote Healthy Gameplay</h3>
-          <p>Encourage regular breaks, mental health awareness, and a culture of respect and inclusivity.</p>
-        </div>
-        <div class="fun"  data-aos="fade-up" data-aos-delay="300">
-          <h3>Addiction-Free Fun</h3>
-          <p>Thoughtful scheduling, reasonable match lengths, and wellness tips ensure gaming stays a passion, not a pitfall.</p>
-        </div>
-      </div>
-    </section>
+  <!-- TEAM SECTION -->
+  <div class="section-title" id="team">◄ GV Team ►</div>
+  <div class="team-grid">
+    <!-- CEO Member -->
+    <div class="member">
+      <img src="assets/samar.jpg" alt="Samar - CEO" />
+      <div class="name">Samar</div>
+      <div class="role">CEO</div>
+    </div>
+    <div class="member">
+      <img src="assets/niel.jpg" alt="Niel - CEO" />
+      <div class="name">Niel</div>
+      <div class="role">CEO</div>
+    </div>
+  </div>
 
-    <!-- EVENTS -->
-    <section id="events" class="section" data-aos="fade-up">
-      <div class="section-title">Our Events</div>
-      <div class="subheading">Upcoming Events</div>
-      <div class="event-list">
-        <div class="event-card" data-aos="fade-right">
-          <div class="event-text">
-            <h4>Barh Summer Royale BGMI Tournament</h4>
-            <p>Duration: 1 Day</p>
-            <p>Date: to be decided</p>
-            <p>Prize: ₹4,000</p>
-            <p>Location: Barh, Bihar</p>
-            <p>Venue: To be decided</p>
-            <p>Click for registration</p>
-            <p>Rules:</p>
-            <p>1. Only Squad entry</p>
-            <p>2. Barh Subdivision Gamers</p>
-          </div>
-          <div class="event-poster">
-            <img src="assets/p.png" alt="Event Poster"/>
-          </div>
-        </div>
-      </div>
-    </section>
+  <!-- GAMERS TEAM -->
+  <div class="section-title">◄ Gamers Team ►</div>
+  <div class="team-grid">
+    <!-- Placeholder Gamer Cards -->
+    <div class="member">
+      <img src="assets/placeholder.png" alt="Kajal - The Spotter" />
+      <div class="name">Kajal (BGMI)</div>
+      <div class="role">The Spotter</div>
+    </div>
+    <div class="member">
+      <img src="assets/placeholder.png" alt="Deep - The 1 vs 4" />
+      <div class="name">Deep (BGMI)</div>
+      <div class="role">The 1 vs 4</div>
+    </div>
+    <!-- Additional gamer slots... -->
+    <div class="member"><img src="assets/placeholder.png" alt="Gamer 3" /><div class="name">Gamer 3</div><div class="role">Caption</div></div>
+    <div class="member"><img src="assets/placeholder.png" alt="Gamer 4" /><div class="name">Gamer 4</div><div class="role">Caption</div></div>
+    <div class="member"><img src="assets/placeholder.png" alt="Gamer 5" /><div class="name">Gamer 5</div><div class="role">Caption</div></div>
+    <div class="member"><img src="assets/placeholder.png" alt="Gamer 6" /><div class="name">Gamer 6</div><div class="role">Caption</div></div>
+  </div>
 
-    <!-- TEAM -->
-    <section id="team" class="section" data-aos="fade-up">
-      <div class="section-title">Our Team</div>
-      <div class="team-members">
-        <div class="team-card" data-aos="flip-left">
-          <img src="assets/samar.jpg" alt="Samar Kumar"/>
-          <h3>Samar Kumar</h3>
-          <p>Founder & CEO</p>
-        </div>
-        <div class="team-card" data-aos="flip-right">
-          <img src="assets/niel.jpg" alt="Niel Kamal"/>
-          <h3>Niel Kamal</h3>
-          <p>Founder & COO</p>
-        </div>
-      </div>
-
-      <div class="section-title">GV Gamers Team</div>
-      <div class="team-members">
-        <div class="team-card" data-aos="flip-left">
-          <img src="assets/Kajal.jpg" alt="The Spooter"/>
-          <h3>The Spooter (BGMI)</h3>
-          <p>Elite FPS team known for strategic gameplay and teamwork.</p>
-        </div>
-        <div class="team-card" data-aos="flip-up">
-          <img src="assets/render.jpg" alt="Render Expert"/>
-          <h3>Render Expert (BGMI/CODM)</h3>
-          <p>High-octane MOBA specialists with regional championships.</p>
-        </div>
-        <div class="team-card" data-aos="flip-right">
-          <img src="assets/deep.jpg" alt="The K/D guy"/>
-          <h3>The K/D guy (BGMI)</h3>
-          <p>Battle royale experts dominating local tournaments.</p>
-        </div>
-        <div class="team-card" data-aos="fade-up">
-          <img src="assets/beginner.jpg" alt="The Beginner"/>
-          <h3>The Beginner (BGMI/CODM)</h3>
-          <p>Battle royale experts dominating local tournaments.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="section" data-aos="fade-up">
-      <div class="section-title">Get in Touch</div>
-      <div class="contact-info">
-        <p><strong>Partnerships:</strong> partnerships@gamevault.com</p>
-        <p><strong>Support:</strong> support@gamevault.com</p>
-        <p>Fill out our <a href="#">Partnership Form</a> or follow us on <a href="#">Linktree</a> for more.</p>
-      </div>
-    </section>
-  </main>
-
-  <!-- AOS & SCRIPTS -->
-  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-  <script>
-    AOS.init({ duration:800, offset:100, once:false, mirror:true });
-
-    /* scroll progress + scroll-spy */
-    window.addEventListener('scroll', () => {
-      const h = document.documentElement;
-      const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
-      document.getElementById('progress').style.width = pct + '%';
-      document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
-      document.querySelectorAll('nav a').forEach(a => {
-        const sec = document.querySelector(a.getAttribute('href'));
-        a.classList.toggle('active',
-          sec &&
-          sec.offsetTop <= window.scrollY + 200 &&
-          sec.offsetTop + sec.offsetHeight > window.scrollY + 200
-        );
-      });
-    });
-
-    /* mobile nav toggle */
-    function(toggleNav){
-      document.getElementById('mainNav').classList.toggle('mobile-open');
-    }
-  </script>
+  <!-- CONTACT & SOCIALS -->
+  <div class="section-title">◄ Want to Talk to Us ►</div>
+  <footer id="contact">
+    <div class="contact">
+      <p><strong>Partnerships:</strong> partnerships@gamevault.com</p>
+      <p><strong>Support:</strong> support@gamevault.com</p>
+    </div>
+    <p>Follow Us: @instagram | @youtube</p>
+  </footer>
 </body>
 </html>
